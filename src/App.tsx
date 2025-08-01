@@ -9,10 +9,9 @@ function App() {
   const connectAndSendMessage = (port: string) => {
     // Check if already connected
     if (connections[port] && connections[port]?.readyState === WebSocket.OPEN) {
-      // Already connected, just send message in raw mode
-      const rawMessage = new Uint8Array([80, 114, 105, 110, 116, 101, 114, 32, 119, 111, 114, 107, 105, 110, 103, 33, 33]); // "Printer working!!" as raw bytes
-      connections[port]?.send(rawMessage);
-      alert(`Sent raw message to port ${port}: Printer working!!`);
+      // Already connected, just send message
+      connections[port]?.send("Printer working!!");
+      alert(`Sent message to port ${port}: Printer working!!`);
       return;
     }
 
@@ -29,10 +28,9 @@ function App() {
         setWsStatus(prev => ({ ...prev, [port]: 'Connected' }));
         setConnections(prev => ({ ...prev, [port]: ws }));
         
-        // Send the message in raw mode
-        const rawMessage = new Uint8Array([80, 114, 105, 110, 116, 101, 114, 32, 119, 111, 114, 107, 105, 110, 103, 33, 33]); // "Printer working!!" as raw bytes
-        ws.send(rawMessage);
-        alert(`Sent raw message to port ${port}: Printer working!!`);
+        // Send the message
+        ws.send("Printer working!!");
+        alert(`Sent message to port ${port}: Printer working!!`);
       };
 
       ws.onmessage = (event) => {
@@ -67,13 +65,13 @@ function App() {
             className="printer-button"
             onClick={() => connectAndSendMessage('40213')}
           >
-            Print (Port 40213) - Raw Mode
+            Print (Port 40213) - Plain Mode
           </button>
           <button 
             className="printer-button"
             onClick={() => connectAndSendMessage('9100')}
           >
-            Print (Port 9100) - Raw Mode
+            Print (Port 9100) - Plain Mode
           </button>
         </div>
         <div className="status-container">
