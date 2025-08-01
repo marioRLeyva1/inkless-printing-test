@@ -40,3 +40,76 @@
 .printer-button:active {
   transform: translateY(2px);
 }
+
+.status-container {
+  margin-top: 30px;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  min-width: 300px;
+}
+
+.status-container p {
+  margin: 10px 0;
+  font-size: 16px;
+  font-family: monospace;
+}
+
+.install-prompt {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #61dafb;
+  color: #282c34;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  max-width: 400px;
+  width: 90%;
+}
+
+.install-content h3 {
+  margin: 0 0 10px 0;
+  font-size: 18px;
+}
+
+.install-content p {
+  margin: 0 0 15px 0;
+  font-size: 14px;
+}
+
+.install-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.install-button, .dismiss-button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.install-button {
+  background-color: #282c34;
+  color: white;
+}
+
+.install-button:hover {
+  background-color: #1a1d23;
+}
+
+.dismiss-button {
+  background-color: rgba(40, 44, 52, 0.2);
+  color: #282c34;
+}
+
+.dismiss-button:hover {
+  background-color: rgba(40, 44, 52, 0.3);
+}
