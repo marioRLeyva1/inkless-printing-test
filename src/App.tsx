@@ -4,14 +4,29 @@ import InstallPrompt from './components/InstallPrompt';
 
 function App() {
   const [wsStatus, setWsStatus] = useState<{ [key: string]: string }>({});
+  const [connections, setConnections] = useState<{ [key: string]: WebSocket | null }>({});
 
   const connectAndSendMessage = (port: string) => {
+    // Check if already connected
+    if (connections[port] && connections[port]?.readyState === WebSocket.OPEN) {
+      // Already connected, just send message
+      connections[port]?.send("Printer working!!");
+      alert(`Sent message to port ${port}: Printer working!!`);
+      return;
+    }
+
+    // If connection exists but is not open, close it first
+    if (connections[port]) {
+      connections[port]?.close();
+    }
+
     try {
       const ws = new WebSocket(`ws://localhost:${port}`);
       
       ws.onopen = () => {
         alert(`Connected to WebSocket on port ${port}`);
         setWsStatus(prev => ({ ...prev, [port]: 'Connected' }));
+        setConnections(prev => ({ ...prev, [port]: ws }));
         
         // Send the message
         ws.send("Printer working!!");
@@ -25,16 +40,19 @@ function App() {
       ws.onerror = (error) => {
         alert(`WebSocket error on port ${port}: ${error}`);
         setWsStatus(prev => ({ ...prev, [port]: 'Error' }));
+        setConnections(prev => ({ ...prev, [port]: null }));
       };
 
       ws.onclose = () => {
         alert(`Disconnected from WebSocket on port ${port}`);
         setWsStatus(prev => ({ ...prev, [port]: 'Disconnected' }));
+        setConnections(prev => ({ ...prev, [port]: null }));
       };
 
     } catch (error) {
       alert(`Failed to connect to WebSocket on port ${port}: ${error}`);
       setWsStatus(prev => ({ ...prev, [port]: 'Failed to connect' }));
+      setConnections(prev => ({ ...prev, [port]: null }));
     }
   };
 
