@@ -10,9 +10,10 @@ function App() {
 
   const message = "Mariano AI Printer successfully connected! Awesome! Viva BM!";
   const messageToPrint = buildMessage(message);
+  console.log("Message to print: " + messageToPrint);
 
   useEffect(() => {
-    console.log("Message to print: " + messageToPrint);
+    //console.log("Message to print: " + messageToPrint);
   }, [])
 
   const connectAndSendMessage = (port: string) => {
