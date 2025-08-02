@@ -1,16 +1,26 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 import InstallPrompt from './components/InstallPrompt';
+import { buildMessage } from './utils/message';
+
 
 function App() {
   const [wsStatus, setWsStatus] = useState<{ [key: string]: string }>({});
   const [connections, setConnections] = useState<{ [key: string]: WebSocket | null }>({});
 
+  const message = "Mariano AI Printer successfully connected! Awesome! Viva BM!";
+  const messageToPrint = buildMessage(message);
+
+  useEffect(() => {
+    console.log("Message to print: " + messageToPrint);
+  }, [])
+
   const connectAndSendMessage = (port: string) => {
     // Check if already connected
     if (connections[port] && connections[port]?.readyState === WebSocket.OPEN) {
-      // Already connected, just send message
-      connections[port]?.send("Printer working!!");
+      console.log("Sending message to port " + port);
+      console.log(messageToPrint);
+      connections[port]?.send(messageToPrint);
       alert(`Sent message to port ${port}: Printer working!!`);
       return;
     }
@@ -27,9 +37,11 @@ function App() {
         alert(`Connected to WebSocket on port ${port}`);
         setWsStatus(prev => ({ ...prev, [port]: 'Connected' }));
         setConnections(prev => ({ ...prev, [port]: ws }));
-        
+
+        console.log("Sending message to port " + port);
+        console.log(messageToPrint);
         // Send the message
-        ws.send("Printer working!!");
+        ws.send(messageToPrint);
         alert(`Sent message to port ${port}: Printer working!!`);
       };
 
