@@ -75,7 +75,7 @@ function App() {
         <h1>Inkless Printing Test</h1>
         <div className="button-container">
 
-          <a href="intent:data_to_print#Intent;scheme=rawbt;package=ru.a402d.rawbtprinter;end;">
+          <a href="intent:Esta es una prueba#Intent;scheme=rawbt;package=ru.a402d.rawbtprinter;end;">
             Print with anchor
           </a>
 
