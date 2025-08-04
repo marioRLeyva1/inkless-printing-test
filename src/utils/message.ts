@@ -1,6 +1,10 @@
 export const buildMessage = (message: string) : string => {
   return JSON.stringify({
-    type: "raw",
-    data: "SG9sYSBtdW5kbw0KSW1wcmVzacOzbiBkZSBwcnViaW5hDQoNCg=="
+    RawBT: [
+      { TextLine: { text: "¡Boletomovil Rocks!" } },
+      { QRCode: { data: "https://boletomovil.com" } },
+      { FeedLine: { lines: 2 } },
+      { CutPaper: {} }
+    ]
   })
 }
