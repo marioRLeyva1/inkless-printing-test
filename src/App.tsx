@@ -74,6 +74,11 @@ function App() {
       <header className="App-header">
         <h1>Inkless Printing Test</h1>
         <div className="button-container">
+
+          <a href="intent:data_to_print#Intent;scheme=rawbt;package=ru.a402d.rawbtprinter;end;">
+            Print with anchor
+          </a>
+
           <button 
             className="printer-button"
             onClick={() => connectAndSendMessage('40213')}
