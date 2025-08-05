@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import InstallPrompt from './components/InstallPrompt';
 import { buildMessage } from './utils/message';
@@ -12,9 +12,21 @@ function App() {
   const messageToPrint = buildMessage(message);
   console.log("Message to print: " + messageToPrint);
 
-  useEffect(() => {
-    //console.log("Message to print: " + messageToPrint);
-  }, [])
+  const connectToWebsocket = () => {
+    try {
+      const ws = new WebSocket("wss://s15025.blr1.piesocket.com/v3/1?api_key=fSMfmoPLnW4Rt6L02b1jxFI1HrFK9jgVl42cn0Wq&notify_self=1")
+      onWebSocketOpen(ws);
+    } catch (error) {
+      console.error("Error connecting to WebSocket: ", error);
+    }
+  }
+
+  const onWebSocketOpen = (ws: WebSocket) => {
+   ws.onopen = () => {
+    //alert(`Connected to WebSocket: ${ws.url}`);
+    ws.send(JSON.stringify({ status: true, message: "browser connected" }))
+   }
+  }
 
   const connectAndSendMessage = (port: string) => {
     // Check if already connected
@@ -75,22 +87,13 @@ function App() {
         <h1>Inkless Printing Test</h1>
         <div className="button-container">
 
-          <a href="intent:Esta es una prueba#Intent;scheme=rawbt;package=ru.a402d.rawbtprinter;end;">
-            Print with anchor
-          </a>
+          <button 
+            className="printer-button"
+            onClick={() => connectToWebsocket()}
+          >
+            Connect to WebSocket
+          </button>
 
-          <button 
-            className="printer-button"
-            onClick={() => connectAndSendMessage('40213')}
-          >
-            Print (Port 40213) - Plain Mode
-          </button>
-          <button 
-            className="printer-button"
-            onClick={() => connectAndSendMessage('9100')}
-          >
-            Print (Port 9100) - Plain Mode
-          </button>
         </div>
         <div className="status-container">
           <p>Port 40213: {wsStatus['40213'] || 'Not connected'}</p>
