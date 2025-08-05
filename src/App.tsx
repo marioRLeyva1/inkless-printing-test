@@ -5,8 +5,7 @@ import { buildMessage } from './utils/message';
 
 
 function App() {
-  const [wsStatus, setWsStatus] = useState<{ [key: string]: string }>({});
-  const [connections, setConnections] = useState<{ [key: string]: WebSocket | null }>({});
+  const [wsStatus, ] = useState<{ [key: string]: string }>({});
 
   const message = "Mariano AI Printer successfully connected! Awesome! Viva BM!";
   const messageToPrint = buildMessage(message);
@@ -28,58 +27,6 @@ function App() {
    }
   }
 
-  const connectAndSendMessage = (port: string) => {
-    // Check if already connected
-    if (connections[port] && connections[port]?.readyState === WebSocket.OPEN) {
-      console.log("Sending message to port " + port);
-      console.log(messageToPrint);
-      connections[port]?.send(messageToPrint);
-      alert(`Sent message to port ${port}: Printer working!!`);
-      return;
-    }
-
-    // If connection exists but is not open, close it first
-    if (connections[port]) {
-      connections[port]?.close();
-    }
-
-    try {
-      const ws = new WebSocket(`ws://localhost:${port}`);
-      
-      ws.onopen = () => {
-        alert(`Connected to WebSocket on port ${port}`);
-        setWsStatus(prev => ({ ...prev, [port]: 'Connected' }));
-        setConnections(prev => ({ ...prev, [port]: ws }));
-
-        console.log("Sending message to port " + port);
-        console.log(messageToPrint);
-        // Send the message
-        ws.send(messageToPrint);
-        alert(`Sent message to port ${port}: Printer working!!`);
-      };
-
-      ws.onmessage = (event) => {
-        alert(`Received from port ${port}: ${event.data}`);
-      };
-
-      ws.onerror = (error) => {
-        alert(`WebSocket error on port ${port}: ${error}`);
-        setWsStatus(prev => ({ ...prev, [port]: 'Error' }));
-        setConnections(prev => ({ ...prev, [port]: null }));
-      };
-
-      ws.onclose = () => {
-        alert(`Disconnected from WebSocket on port ${port}`);
-        setWsStatus(prev => ({ ...prev, [port]: 'Disconnected' }));
-        setConnections(prev => ({ ...prev, [port]: null }));
-      };
-
-    } catch (error) {
-      alert(`Failed to connect to WebSocket on port ${port}: ${error}`);
-      setWsStatus(prev => ({ ...prev, [port]: 'Failed to connect' }));
-      setConnections(prev => ({ ...prev, [port]: null }));
-    }
-  };
 
   return (
     <div className="App">
