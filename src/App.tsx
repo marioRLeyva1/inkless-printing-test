@@ -41,6 +41,10 @@ function App() {
             Connect to WebSocket
           </button>
 
+          <a href="yoshiprinter://send?data=%7B%22user%22%3A%22Luis%22%2C%22message%22%3A%22Hola%20desde%20la%20web%22%7D" target="_blank" rel="noopener noreferrer">
+            INTENT
+          </a>
+
         </div>
         <div className="status-container">
           <p>Port 40213: {wsStatus['40213'] || 'Not connected'}</p>
